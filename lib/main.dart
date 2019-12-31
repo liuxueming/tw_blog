@@ -8,6 +8,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: 'Startup Name Generator',
+      theme: new ThemeData(
+        primaryColor: Colors.blue,
+      ),
       home: new RandomWords(),
     );
   }
@@ -48,7 +51,7 @@ class RandomWordsState extends State<RandomWords> {
           final tiles = _saved.map(
             (pair) {
               return new ListTile(
-                title: new Text(``
+                title: new Text(
                   pair.asPascalCase,
                   style: _biggerFont,
                 ),
