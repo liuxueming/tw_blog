@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -6,6 +5,7 @@ import 'dart:typed_data';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'db.dart';
+import 'package:flutter_html_view/flutter_html_view.dart';
 
 void main() => runApp(new MyApp());
 
@@ -28,7 +28,7 @@ class BlogList extends StatefulWidget {
 }
 
 class BlogListState extends State<BlogList> {
-void readData() async {
+  void readData() async {
     var databasesPath = await getDatabasesPath();
     var path = join(databasesPath, "my_blogs.db");
     print(databasesPath);
@@ -60,7 +60,6 @@ void readData() async {
     print(blogs.length);
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -76,18 +75,12 @@ void readData() async {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('博客大赛'),
-        actions: <Widget>[
-          new IconButton(
-            icon: new Icon(Icons.list),
-            onPressed: ()=>Void,
-          )
-        ],
       ),
-      body: _buildSuggestions(),
+      body: _buildSuggestions(context),
     );
   }
 
-  Widget _buildSuggestions() {
+  Widget _buildSuggestions(BuildContext context) {
     if (_blogs.length == 0) {
       return null;
     }
@@ -100,17 +93,34 @@ void readData() async {
         if (index >= _blogs.length) {
           print('啊哈哈');
         }
-        return _buildRow(_blogs[index]);
+        return _buildRow(context, _blogs[index]);
       },
     );
   }
 
-  Widget _buildRow(Blog blog) {
+  Widget _buildRow(BuildContext context, Blog blog) {
     return new ListTile(
-      title: new Text(
-        blog.name,
-        style: _biggerFont,
-      ),
-    );
+        title: new Text(
+          blog.name,
+          style: _biggerFont,
+        ),
+        onTap: () {
+          print(blog.content);
+          Navigator.of(context).push(
+            new MaterialPageRoute(
+              builder: (context) {
+                return new Scaffold(
+                  appBar: new AppBar(
+                    title: new Text('Content'),
+                  ),
+                  body: new HtmlView(data: blog.content)
+                );
+              },
+            ),
+          );
+        });
   }
+}
+
+class WebviewScaffold {
 }
