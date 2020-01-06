@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'db.dart';
-import 'package:flutter_html_view/flutter_html_view.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 void main() => runApp(new MyApp());
 
@@ -99,22 +99,37 @@ class BlogListState extends State<BlogList> {
   }
 
   Widget _buildRow(BuildContext context, Blog blog) {
+   
+    replaceUnSupportTag(String content) {
+      return content.replaceAll('head', 'strong').replaceAll('title', 'strong');
+    }
+    
     return new ListTile(
         title: new Text(
           blog.name,
           style: _biggerFont,
         ),
         onTap: () {
-          print(blog.content);
+
           Navigator.of(context).push(
             new MaterialPageRoute(
               builder: (context) {
                 return new Scaffold(
-                  appBar: new AppBar(
-                    title: new Text('Content'),
-                  ),
-                  body: new HtmlView(data: blog.content)
-                );
+                    appBar: new AppBar(
+                      title: new Text('Content'),
+                    ),
+                    body: SingleChildScrollView(
+                      child: new Html(
+                        data: """${replaceUnSupportTag(blog.content)}""",
+                        //Optional parameters:
+                        padding: EdgeInsets.all(8.0),
+                        backgroundColor: Colors.white70,
+                        defaultTextStyle: TextStyle(fontFamily: 'serif'),
+                        linkStyle: const TextStyle(
+                          color: Colors.redAccent,
+                        ),
+                      ),
+                    ));
               },
             ),
           );
@@ -122,5 +137,3 @@ class BlogListState extends State<BlogList> {
   }
 }
 
-class WebviewScaffold {
-}
