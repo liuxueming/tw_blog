@@ -121,13 +121,6 @@ class BlogListState extends State<BlogList> {
                     body: SingleChildScrollView(
                       child: new Html(
                         data: """${replaceUnSupportTag(blog.content)}""",
-                        //Optional parameters:
-                        padding: EdgeInsets.all(8.0),
-                        backgroundColor: Colors.white70,
-                        defaultTextStyle: TextStyle(fontFamily: 'serif'),
-                        linkStyle: const TextStyle(
-                          color: Colors.redAccent,
-                        ),
                       ),
                     ));
               },

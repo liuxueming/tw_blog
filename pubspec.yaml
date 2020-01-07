@@ -9,7 +9,7 @@ dependencies:
   english_words: ^3.1.0
   sqflite:
   path:
-  flutter_html: ^0.11.1
+  flutter_html: ^1.0.0-pre.1
 
 dev_dependencies:
   flutter_test:
